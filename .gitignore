@@ -12,4 +12,5 @@ pf-sbx/
 .idea
 *.log
 *.log.*
+package-lock.json
 overlays

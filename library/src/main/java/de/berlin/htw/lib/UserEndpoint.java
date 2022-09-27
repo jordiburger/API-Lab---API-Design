@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -31,7 +32,7 @@ public interface UserEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Create a new user.")
     Response createUser(
-        @Parameter(description = "User information", required = true) UserJson user);
+        @Parameter(description = "User information", required = true) @Valid UserJson user);
 
     @GET
     @Path("/{userId}")
@@ -47,7 +48,7 @@ public interface UserEndpoint {
     @Operation(summary = "Update information of a user.")
     UserJson updateUser(
         @Parameter(description = "ID of the user", required = true) @PathParam("userId") String userId,
-        @Parameter(description = "User information", required = true) UserJson user);
+        @Parameter(description = "User information", required = true) @Valid UserJson user);
 
     @DELETE
     @Path("/{userId}")

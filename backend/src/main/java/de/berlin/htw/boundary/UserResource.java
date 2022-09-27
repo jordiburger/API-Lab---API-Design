@@ -3,9 +3,9 @@ package de.berlin.htw.boundary;
 import java.net.URI;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -18,16 +18,17 @@ import de.berlin.htw.lib.model.UserModel;
 /**
  * @author Alexander Stanik [stanik@htw-berlin.de]
  */
+@Path(UserEndpoint.CONTEXT + "/" + UserEndpoint.VERSION + "/" + UserEndpoint.SERVICE)
 public class UserResource implements UserEndpoint {
     
     @Context
-    private UriInfo uri;
+    UriInfo uri;
 
     @Inject
-    private UserController controller;
+    UserController controller;
 
     @Override
-    public Response createUser(@Valid final UserJson user) {
+    public Response createUser(final UserJson user) {
         final String userId = controller.createUser(user);
         final URI location = uri.getAbsolutePathBuilder().path(userId).build();
         return Response.created(location).build();
@@ -35,12 +36,16 @@ public class UserResource implements UserEndpoint {
 
     @Override
     public UserJson getUser(final String userId) {
-        final UserModel user = controller.getUser(userId);
-        return new UserJson(user);
+        try {
+            final UserModel user = controller.getUser(userId);
+            return new UserJson(user);
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Invalid user id", e);
+        }
     }
 
     @Override
-    public UserJson updateUser(final String userId, @Valid final UserJson user) {
+    public UserJson updateUser(final String userId, final UserJson user) {
         if(user.getId() != null) {
             throw new BadRequestException("User ID should not be set in payload");
         } else {

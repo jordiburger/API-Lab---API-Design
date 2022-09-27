@@ -1,29 +1,38 @@
 package de.berlin.htw.entity.dao;
 
+import java.util.UUID;
+
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
+import javax.validation.Valid;
 
 import de.berlin.htw.entity.dto.UserEntity;
 
+/**
+ * @author Alexander Stanik [stanik@htw-berlin.de]
+ */
+@ApplicationScoped
 @Transactional(TxType.MANDATORY)
 public class UserRepository {
 
     @Inject
-    private EntityManager entityManager;
+    EntityManager entityManager;
     
     @Transactional(TxType.SUPPORTS)
     public UserEntity get(final String userId) {
-        return entityManager.find(UserEntity.class, userId);
+        final UUID id = UUID.fromString(userId);
+        return entityManager.find(UserEntity.class, id);
     }
 
-    public String add(final UserEntity user) {
+    public String add(@Valid final UserEntity user) {
         entityManager.persist(user);
         return user.getId();
     }
 
-    public UserEntity set(final UserEntity user) {
+    public UserEntity set(@Valid final UserEntity user) {
         return entityManager.merge(user);
     }
 
@@ -32,17 +41,10 @@ public class UserRepository {
             .setParameter("id", userId)
             .executeUpdate() > 0;
     }
+
+    @Transactional(TxType.SUPPORTS)
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
     
-    public void beginTransaction() {
-        entityManager.getTransaction().begin();
-    }
-
-    public void commitTransaction() {
-        entityManager.getTransaction().commit();
-    }
-
-    public void rollbackTransaction() {
-        entityManager.getTransaction().rollback();
-    }
-
 }

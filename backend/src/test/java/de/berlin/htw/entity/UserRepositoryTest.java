@@ -1,21 +1,81 @@
 package de.berlin.htw.entity;
 
 import io.quarkus.test.junit.QuarkusTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.TransactionRequiredException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.Status;
+import javax.transaction.SystemException;
+import javax.transaction.TransactionalException;
+import javax.transaction.UserTransaction;
+import javax.validation.ConstraintViolationException;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
+import de.berlin.htw.entity.dao.UserRepository;
+import de.berlin.htw.entity.dto.UserEntity;
 
 @QuarkusTest
 class UserRepositoryTest {
+    
+    static final String NAME = "Max Mustermann";
+    static final String EMAIL = "max.mustermann@example.org";
+
+    @Inject
+    UserRepository repository;
+    
+    @Inject
+    UserTransaction transaction;
+
+    @AfterEach
+    void cleanUp() throws Exception {
+        if (transaction.getStatus() != Status.STATUS_NO_TRANSACTION) {
+            transaction.rollback();
+        }
+    }
 
     @Test
-    void testHelloEndpoint() {
-        given()
-          .when().get("/hello")
-          .then()
-             .statusCode(200)
-             .body(is("Hello RESTEasy"));
+    void testTransactionRequired() {
+        assertThrows(
+            TransactionalException.class,
+            () -> repository.add(new UserEntity()));
+    }
+
+    @Test
+    void testAddAndGet() throws Exception {
+        final UserEntity entity = new UserEntity();
+        entity.setName(NAME);
+        entity.setEmail(EMAIL);
+
+        transaction.begin();
+        final String userId = repository.add(entity);
+        assertNotNull(userId);
+        assertEquals(36, userId.length());
+        transaction.commit();
+        repository.getEntityManager().clear();
+
+        assertEquals(NAME, repository.get(userId).getName());
+        assertEquals(EMAIL, repository.get(userId).getEmail());
+    }
+
+    @Test
+    void testValidationOnAdd() throws Exception {
+        final UserEntity entity = new UserEntity();
+        entity.setName(EMAIL);
+        entity.setEmail(NAME);
+
+        transaction.begin();
+        assertThrows(
+            ConstraintViolationException.class,
+            () -> repository.add(entity));
+        transaction.rollback();
     }
 
 }

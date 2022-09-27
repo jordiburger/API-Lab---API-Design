@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import de.berlin.htw.lib.model.UserModel;
 
@@ -28,6 +29,7 @@ public class UserEntity extends AbstractEntity implements UserModel {
         name = "UUID",
         strategy = "org.hibernate.id.UUIDGenerator"
     )
+    @Type(type = "org.hibernate.type.UUIDCharType")
     @Column(name = "ID", nullable = false, length = 36)
     private UUID id;
     

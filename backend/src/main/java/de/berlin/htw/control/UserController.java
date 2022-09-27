@@ -4,7 +4,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
+import javax.transaction.UserTransaction;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
 
 import org.jboss.logging.Logger;
 
@@ -24,6 +26,9 @@ public class UserController {
 
     @Inject
     UserRepository repository;
+    
+    @Inject
+    UserTransaction transaction;
 
     public String createUser(final UserModel user) {
         logger.infov("Creating a new user ({0})", user);
@@ -31,21 +36,29 @@ public class UserController {
         entity.setName(user.getName());
         entity.setEmail(user.getEmail());
         try {
-            repository.beginTransaction();
+            transaction.begin();
             String userId = repository.add(entity);
-            repository.commitTransaction();
+            transaction.commit();
             return userId;
         } catch (EntityExistsException e) {
             throw new AlreadyExistsException("Unable to create user", e);
         } catch (Exception e) {
-            repository.rollbackTransaction();
+            try {
+                transaction.rollback();
+            } catch (Exception ex) {
+                throw new InternalServerErrorException("Unable to rollback on create user", ex);
+            }
             throw new InternalServerErrorException("Unable to create user", e);
         }
     }
 
     public UserModel getUser(final String userId) {
         logger.infov("Retrieving an existing user (id = {0})", userId);
-        return repository.get(userId);
+        final UserModel user = repository.get(userId);
+        if(user == null) {
+            throw new NotFoundException("User not exist");
+        }
+        return user;
     }
 
     @Transactional

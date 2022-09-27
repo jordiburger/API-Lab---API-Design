@@ -6,6 +6,9 @@ import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.logging.Logger;
 
+/**
+ * @author Alexander Stanik [stanik@htw-berlin.de]
+ */
 @ApplicationScoped
 public class LoggerProducer {
 

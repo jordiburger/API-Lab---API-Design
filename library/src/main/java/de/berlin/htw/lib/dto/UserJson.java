@@ -6,6 +6,7 @@ import javax.json.bind.annotation.JsonbDateFormat;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
@@ -16,6 +17,7 @@ import de.berlin.htw.lib.model.UserModel;
  */
 public class UserJson implements UserModel {
 
+    @Null
     @JsonbTransient
     private String id;
 
@@ -32,6 +34,16 @@ public class UserJson implements UserModel {
     @JsonbDateFormat("dd-MM-yyyy")
     @PastOrPresent
     private LocalDate registeredDate;
+
+    public UserJson() {
+        // do nothing
+    }
+
+    public UserJson(UserModel user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+    }
 
     @Override
     public String getId() {

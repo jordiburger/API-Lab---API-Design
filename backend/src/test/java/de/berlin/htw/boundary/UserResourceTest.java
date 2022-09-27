@@ -1,4 +1,4 @@
-package de.berlin.htw;
+package de.berlin.htw.boundary;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-class GreetingResourceTest {
+class UserResourceTest {
 
     @Test
     void testHelloEndpoint() {

@@ -1,28 +1,60 @@
 package de.berlin.htw.boundary;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import java.net.URI;
 
-import de.berlin.htw.boundary.dto.Orders;
+import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
-@Path("/users/{id}")
-public class UserResource {
+import de.berlin.htw.control.UserController;
+import de.berlin.htw.lib.UserEndpoint;
+import de.berlin.htw.lib.dto.UserJson;
+import de.berlin.htw.lib.model.UserModel;
 
-    @GET
-    @Path("/orders")
-    @Produces("application/json")
-    public Orders filterOrdersByName(
-            @PathParam("id") String userId, 
-            @QueryParam("name") String name) {
-        
-        return getOrdersByName(userId, name);
+/**
+ * @author Alexander Stanik [stanik@htw-berlin.de]
+ */
+public class UserResource implements UserEndpoint {
+    
+    @Context
+    private UriInfo uri;
+
+    @Inject
+    private UserController controller;
+
+    @Override
+    public Response createUser(@Valid final UserJson user) {
+        final String userId = controller.createUser(user);
+        final URI location = uri.getAbsolutePathBuilder().path(userId).build();
+        return Response.created(location).build();
     }
 
-    private Orders getOrdersByName(String userId, String name) {
-        // TODO Auto-generated method stub
-        return null;
+    @Override
+    public UserJson getUser(final String userId) {
+        final UserModel user = controller.getUser(userId);
+        return new UserJson(user);
     }
+
+    @Override
+    public UserJson updateUser(final String userId, @Valid final UserJson user) {
+        if(user.getId() != null) {
+            throw new BadRequestException("User ID should not be set in payload");
+        } else {
+            user.setId(userId);
+        }
+        final UserModel updatedUser = controller.updateUser(user);
+        return new UserJson(updatedUser);
+    }
+
+    @Override
+    public void deleteUser(final String userId) {
+        if(!controller.deleteUser(userId)) {
+            throw new NotFoundException();
+        }
+    }
+
 }

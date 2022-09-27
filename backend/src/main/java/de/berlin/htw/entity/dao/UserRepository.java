@@ -14,12 +14,35 @@ public class UserRepository {
     private EntityManager entityManager;
     
     @Transactional(TxType.SUPPORTS)
-    UserEntity get(final String userId) {
+    public UserEntity get(final String userId) {
         return entityManager.find(UserEntity.class, userId);
     }
 
-    void add(final UserEntity user) {
+    public String add(final UserEntity user) {
         entityManager.persist(user);
+        return user.getId();
+    }
+
+    public UserEntity set(final UserEntity user) {
+        return entityManager.merge(user);
+    }
+
+    public boolean remove(final String userId) {
+        return entityManager.createNamedQuery("UserEntity.deleteById")
+            .setParameter("id", userId)
+            .executeUpdate() > 0;
+    }
+    
+    public void beginTransaction() {
+        entityManager.getTransaction().begin();
+    }
+
+    public void commitTransaction() {
+        entityManager.getTransaction().commit();
+    }
+
+    public void rollbackTransaction() {
+        entityManager.getTransaction().rollback();
     }
 
 }

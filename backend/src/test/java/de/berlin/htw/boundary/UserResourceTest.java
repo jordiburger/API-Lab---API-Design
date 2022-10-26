@@ -51,8 +51,8 @@ class UserResourceTest {
         user.setEmail("any@example.org");
         final Response res = given()
             .when()
-            .body(user)
             .contentType(MediaType.APPLICATION_JSON)
+            .body(user)
             .post(BASE_PATH)
             .thenReturn();
 
@@ -67,8 +67,8 @@ class UserResourceTest {
             .then()
             .statusCode(Status.OK.getStatusCode())
             .contentType(ContentType.JSON)
-            .and().body("name", Matchers.equalTo("Test"))
-            .and().body("email", Matchers.equalTo("any@example.org"));
+            .and().body("user_name", Matchers.equalTo("Test"))
+            .and().body("user_email", Matchers.equalTo("any@example.org"));
     }
 
 }

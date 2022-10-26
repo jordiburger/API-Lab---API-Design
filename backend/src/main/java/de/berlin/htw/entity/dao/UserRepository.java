@@ -1,10 +1,15 @@
 package de.berlin.htw.entity.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 import javax.validation.Valid;
@@ -21,6 +26,16 @@ public class UserRepository {
     @Inject
     EntityManager entityManager;
     
+    @Transactional(TxType.NEVER)
+    public List<UserEntity> getAll() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<UserEntity> cq = cb.createQuery(UserEntity.class);
+        Root<UserEntity> rootEntry = cq.from(UserEntity.class);
+        CriteriaQuery<UserEntity> all = cq.select(rootEntry);
+        TypedQuery<UserEntity> allQuery = entityManager.createQuery(all);
+        return allQuery.getResultList();
+    }
+
     @Transactional(TxType.SUPPORTS)
     public UserEntity get(final String userId) {
         final UUID id = UUID.fromString(userId);
@@ -37,8 +52,9 @@ public class UserRepository {
     }
 
     public boolean remove(final String userId) {
+        final UUID id = UUID.fromString(userId);
         return entityManager.createNamedQuery("UserEntity.deleteById")
-            .setParameter("id", userId)
+            .setParameter("id", id)
             .executeUpdate() > 0;
     }
 

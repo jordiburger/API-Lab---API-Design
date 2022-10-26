@@ -18,7 +18,6 @@ import de.berlin.htw.lib.model.UserModel;
 public class UserJson implements UserModel {
 
     @Null
-    @JsonbTransient
     private String id;
 
     @JsonbProperty("user_name")
@@ -35,6 +34,9 @@ public class UserJson implements UserModel {
     @PastOrPresent
     private LocalDate registeredDate;
 
+    @JsonbTransient
+    private Integer age;
+    
     public UserJson() {
         // do nothing
     }

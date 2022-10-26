@@ -1,5 +1,7 @@
 package de.berlin.htw.control;
 
+import java.util.List;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
@@ -30,8 +32,12 @@ public class UserController {
     @Inject
     UserTransaction transaction;
 
+    public List<? extends UserModel> getUsers() {
+        return repository.getAll();
+    }
+
     public String createUser(final UserModel user) {
-        logger.infov("Creating a new user ({0})", user);
+        logger.infov("Creating a new user (name={0}, email={1})", user.getName(), user.getEmail());
         final UserEntity entity = new UserEntity();
         entity.setName(user.getName());
         entity.setEmail(user.getEmail());

@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,6 +29,11 @@ public interface UserEndpoint {
     final static String CONTEXT = "api";
     final static String VERSION = "v2";
     final static String SERVICE = "users";
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Retrieve information of all users.")
+    List<UserJson> getUsers();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

@@ -1,6 +1,8 @@
 package de.berlin.htw.boundary;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
@@ -20,12 +22,19 @@ import de.berlin.htw.lib.model.UserModel;
  */
 @Path(UserEndpoint.CONTEXT + "/" + UserEndpoint.VERSION + "/" + UserEndpoint.SERVICE)
 public class UserResource implements UserEndpoint {
-    
+
     @Context
     UriInfo uri;
 
     @Inject
     UserController controller;
+
+    @Override
+    public List<UserJson> getUsers() {
+        final List<UserJson> users = new ArrayList<>();
+        controller.getUsers().forEach(user -> users.add(new UserJson(user)));
+        return users;
+    }
 
     @Override
     public Response createUser(final UserJson user) {
@@ -46,7 +55,7 @@ public class UserResource implements UserEndpoint {
 
     @Override
     public UserJson updateUser(final String userId, final UserJson user) {
-        if(user.getId() != null) {
+        if (user.getId() != null) {
             throw new BadRequestException("User ID should not be set in payload");
         } else {
             user.setId(userId);
@@ -57,7 +66,7 @@ public class UserResource implements UserEndpoint {
 
     @Override
     public void deleteUser(final String userId) {
-        if(!controller.deleteUser(userId)) {
+        if (!controller.deleteUser(userId)) {
             throw new NotFoundException();
         }
     }

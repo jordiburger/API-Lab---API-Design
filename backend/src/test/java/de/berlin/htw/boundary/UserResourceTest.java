@@ -10,6 +10,7 @@ import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
+import de.berlin.htw.AbstractTest;
 import de.berlin.htw.lib.dto.UserJson;
 
 import static io.restassured.RestAssured.given;
@@ -20,7 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 @QuarkusTest
-class UserResourceTest {
+class UserResourceTest extends AbstractTest {
 
     static final String BASE_PATH = "/api/v2/users";
 

@@ -7,11 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.TransactionRequiredException;
-import javax.transaction.NotSupportedException;
 import javax.transaction.Status;
-import javax.transaction.SystemException;
 import javax.transaction.TransactionalException;
 import javax.transaction.UserTransaction;
 import javax.validation.ConstraintViolationException;
@@ -19,11 +15,12 @@ import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import de.berlin.htw.AbstractTest;
 import de.berlin.htw.entity.dao.UserRepository;
 import de.berlin.htw.entity.dto.UserEntity;
 
 @QuarkusTest
-class UserRepositoryTest {
+class UserRepositoryTest extends AbstractTest {
     
     static final String NAME = "Max Mustermann";
     static final String EMAIL = "max.mustermann@example.org";

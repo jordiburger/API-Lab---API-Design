@@ -17,14 +17,16 @@ In dieser Aufgabe erhalten Sie ein vorkonfiguriertes Projekt, das aus drei Kompo
 - **Backend:** Eine Quarkus Applikation, die die Bibliothek implementiert und das Frontend ausliefert
 
 Die bereits vorhandene Funktion umfasst das Anlegen, Ändern, Löschen und Abrufen von Benutzern.
-Das Ziel der Übungsaufgabe 2 ist die Erweiterung dieser Applikation. Nach erfolgreicher Implementierung der nachfolgenden Aufgaben, sollte die Backend Applikation zum Einen das Anlegen, Ändern, Löschen und Abrufen von Projekten unterstützen und zum Anderen die Möglichkeit zur Verknüpfung von Benutzern zu Projekten bereitstellen.
+Das Ziel der Übungsaufgabe 2 ist die Erweiterung dieser Applikation. Nach erfolgreicher Implementierung der nachfolgenden Aufgaben, sollte die Backend Applikation zum Einen das Anlegen, Ändern, Löschen und Abrufen von Projekten unterstützen und zum Anderen die Möglichkeit der Verknüpfung von Benutzern zu Projekten bereitstellen.
 
 1.  **(4P)** Wie Sie sicherlich bereits festgestellt haben, lässt sich das Projekt nicht so einfach mittels ``$ mvn package`` bauen und mit ``$ java -jar ./backend/target/verteilte-anwendung-runner.jar`` starten. Dies liegt an der fehlenden Datenbank! Schreiben Sie daher ein Docker Compose file mit dem Sie das [offizielle Image der MySQL aus Docker Hub](https://hub.docker.com/_/mysql) starten. Beachten Sie bitte die bereits vorhandenen Konfigurationen in der 
-[application.properties](backend/src/main/resources/application.properties). Wenn Sie die MySQL korrekt gestartet haben und sowie das Projekt inklusive der Integrationstests bauen und starten können, dann sollten sie auf die Applikation über [http://localhost:8080/](http://localhost:8080/) zugreifen können.
-2.  **(4P)** Um auch Projekte in der MySQL speichern zu können, muss das bestehende Schema um zwei Tabellen erweitert werden. Erstellen Sie dafür ein neues Liquibase ChangeSet in [liquibase-changelog.xml](backend/src/main/resources/META-INF/liquibase-changelog.xml), das zum einen die Speicherung von Projekten ermöglicht zum Anderen eine Many-to-Many Relation zwischen User und Projekt
-in eine Junction Table.
-3.  **(4P)** Schreiben Sie ein Docker Compose file mit dem Sie das angepasste Image aus dem ersten Schritt starten. Der gestartete Container soll über Port 8181 erreichbar sein und die Konfiguration aus einer lokalen Datei des Host Systems (somit nicht im Image enthalten) lesen.
-4.  **(8P)** Erweitern sie die Quarkus Applikation, um einen weiteren REST Endpunkt. Dieser soll unter dem Pfad `/aufgaben/1/` eine Ressource namens „zahl“ vom Media Type ``application/example`` bereitstellen. Der REST Endpunkt soll vier Methoden unterstützen: 1. Initiales Anlegen einer Zahl, 2. Abrufen der aktuellen Zahl, 3. Aktualisieren einer Zahl und 4. Löschen einer Zahl. 
+[application.properties](backend/src/main/resources/application.properties). Wenn Sie die MySQL korrekt gestartet haben, dann sollten Sie das Projekt bauen und die Integrationstests ausführen können.
+Nach dem Start der Applikation sollten Sie auf die Single-Page-Applikation über [http://localhost:8080/](http://localhost:8080/) zugreifen können.
+2.  **(4P)** Um zusätzlich zu den Benutzern auch noch Projekte in der MySQL speichern zu können, muss das bestehende Schema um zwei Tabellen erweitert werden. Erstellen Sie dafür ein neues 
+[Liquibase ChangeSet](https://docs.liquibase.com/concepts/changelogs/xml-format.html) in 
+[liquibase-changelog.xml](backend/src/main/resources/META-INF/liquibase-changelog.xml), das zum Einen die Speicherung von Projekten ermöglicht und zum Anderen eine Many-to-Many Relation zwischen User und Projekt über eine Junction Table realisiert.
+3.  **(4P)** Erweitern Sie den Enitity Layer um eine Projekt Entität. Diese Projekt Entität soll ein entsprechendes Mapping mittels [@ManyToMany](https://www.baeldung.com/jpa-many-to-many) implementieren. Stellen Sie durch entsprechende Integrationstests (mindestens 5) eine ausreichende Funktionalität sicher.
+4.  **(8P)** Designen und Implementieren Sie einen REST Endpunkt zum Anlegen von neuen Projekten und zum Verknüpfen mit Benutzern. Dieser REST Endpunkt soll über einen Controller auf den Entity Layer aus Aufgabe 3 zugreifen und die entsprechenden Daten persistieren. 
 
 
 # Quarkus Get Started

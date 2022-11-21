@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,7 +23,7 @@ import de.berlin.htw.entity.dto.UserEntity;
 @Transactional(TxType.MANDATORY)
 public class UserRepository {
 
-    @Inject
+    @PersistenceContext
     EntityManager entityManager;
     
     @Transactional(TxType.NEVER)

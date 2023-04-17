@@ -4,10 +4,8 @@ Mögliche Punktzahl: 20 Punkte
 
 ## Deadlines
 
-- 1. Zug 1. Gruppe: 19.12.2022
-- 1. Zug 2. Gruppe: 22.12.2022
-- 2. Zug 1. Gruppe: 20.12.2022
-- 2. Zug 2. Gruppe: 20.12.2022 
+- 1. Zug: 8.6.2023
+- 2. Zug: 6.6.2023 
 
 ## Aufgabestellung
 In dieser Aufgabe erhalten Sie ein vorkonfiguriertes Projekt, das aus drei Komponenten besteht:

@@ -98,7 +98,7 @@
                 <directory>${project.build.directory}/frontend</directory>
                 <!-- write to subfolder for /frontend/ url path -->
                 <targetPath>${project.build.directory}/classes/META-INF/resources</targetPath>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
             </resource>
         </resources>
         <testResources>

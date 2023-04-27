@@ -23,8 +23,8 @@ Nach dem Start der Applikation sollten Sie auf die Single-Page-Applikation über
 2.  **(4P)** Um zusätzlich zu den Benutzern auch noch Projekte in der MySQL speichern zu können, muss das bestehende Schema um zwei Tabellen erweitert werden. Erstellen Sie dafür ein neues 
 [Liquibase ChangeSet](https://docs.liquibase.com/concepts/changelogs/xml-format.html) in 
 [liquibase-changelog.xml](backend/src/main/resources/META-INF/liquibase-changelog.xml), das zum Einen die Speicherung von Projekten ermöglicht und zum Anderen eine Many-to-Many Relation zwischen User und Projekt über eine Junction Table realisiert.
-3.  **(4P)** Erweitern Sie den Enitity Layer um eine Projekt Entität. Diese Projekt Entität soll ein entsprechendes Mapping mittels [@ManyToMany](https://www.baeldung.com/jpa-many-to-many) implementieren. Stellen Sie durch entsprechende Integrationstests (mindestens 5) eine ausreichende Funktionalität sicher.
-4.  **(8P)** Designen und Implementieren Sie einen REST Endpunkt zum Anlegen von neuen Projekten und zum Verknüpfen mit Benutzern. Dieser REST Endpunkt soll über einen Controller auf den Entity Layer aus Aufgabe 3 zugreifen und die entsprechenden Daten persistieren. 
+3.  **(4P)** Erweitern Sie den Enitity Layer um eine Projekt Entität. Diese Projekt Entität soll ein entsprechendes Mapping mittels [@ManyToMany](https://www.baeldung.com/jpa-many-to-many) implementieren. Entwickeln Sie außerdem einen Controller, der die Business Logic implementiert und die Transaktionen für den Data Layer kontrolliert. Stellen Sie durch entsprechende Integrationstests (mindestens 5) eine ausreichende Funktionalität sicher.
+4.  **(8P)** Designen und implementieren Sie einen REST Endpunkt zum Anlegen, Ändern, Verknüpfen, Löschen und Abrufen von Projekten. Dieser REST Endpunkt soll über den Controller aus Aufgabe 3 die entsprechenden Daten persistieren. Stellen Sie durch entsprechende REST Assured Integrationstests (mindestens 5) eine ausreichende Funktionalität sicher.
 
 
 # Quarkus Get Started

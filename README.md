@@ -4,10 +4,10 @@ Mögliche Punktzahl: 20 Punkte
 
 ## Deadlines
 
-- 1. Zug: 8.6.2023
-- 2. Zug: 6.6.2023 
+- 1. Zug: 7.12.2023
+- 2. Zug: 5.12.2023 
 
-## Aufgabestellung
+## Aufgabenstellung
 In dieser Aufgabe erhalten Sie ein vorkonfiguriertes Projekt, das aus drei Komponenten besteht:
 
 - **Frontend:** Eine Single-Page-Application programmiert mit Vue.js

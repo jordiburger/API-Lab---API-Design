@@ -2,13 +2,14 @@ package de.berlin.htw.lib.dto;
 
 import java.time.LocalDate;
 
-import javax.json.bind.annotation.JsonbDateFormat;
-import javax.json.bind.annotation.JsonbProperty;
-import javax.json.bind.annotation.JsonbTransient;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 
 import de.berlin.htw.lib.model.UserModel;
 
@@ -20,21 +21,21 @@ public class UserJson implements UserModel {
     @Null
     private String id;
 
-    @JsonbProperty("user_name")
+    @JsonProperty("user_name")
     @Size(min = 3, max = 99, message = "The name must be between 3 and 99 characters")
     private String name;
 
-    @JsonbProperty("user_email")
+    @JsonProperty("user_email")
     @Size(max = 255, message = "The email cannot be longer than 255 characters")
     @Email(message = "Email should be valid")
     private String email;
 
-    @JsonbProperty("registered_date")
-    @JsonbDateFormat("dd-MM-yyyy")
+    @JsonProperty("registered_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @PastOrPresent
     private LocalDate registeredDate;
 
-    @JsonbTransient
+    @JsonIgnore
     private Integer age;
     
     public UserJson() {

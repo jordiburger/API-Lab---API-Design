@@ -1,18 +1,17 @@
 package de.berlin.htw.entity.dao;
 
 import java.util.List;
-import java.util.UUID;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
-import javax.validation.Valid;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
+import jakarta.validation.Valid;
 
 import de.berlin.htw.entity.dto.UserEntity;
 
@@ -38,8 +37,7 @@ public class UserRepository {
 
     @Transactional(TxType.SUPPORTS)
     public UserEntity get(final String userId) {
-        final UUID id = UUID.fromString(userId);
-        return entityManager.find(UserEntity.class, id);
+        return entityManager.find(UserEntity.class, userId);
     }
 
     public String add(@Valid final UserEntity user) {
@@ -52,9 +50,8 @@ public class UserRepository {
     }
 
     public boolean remove(final String userId) {
-        final UUID id = UUID.fromString(userId);
         return entityManager.createNamedQuery("UserEntity.deleteById")
-            .setParameter("id", id)
+            .setParameter("id", userId)
             .executeUpdate() > 0;
     }
 

@@ -1,17 +1,18 @@
 package de.berlin.htw.entity.dto;
 
+import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Email;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Email;
 
 import de.berlin.htw.lib.model.UserModel;
 
@@ -21,17 +22,11 @@ import de.berlin.htw.lib.model.UserModel;
 @NamedQuery(name = "UserEntity.deleteById", query = "delete from UserEntity user where user.id = :id")
 @Entity
 @Table(name = "USER")
-public class UserEntity extends AbstractEntity implements UserModel {
+public class UserEntity implements UserModel {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Type(type = "org.hibernate.type.UUIDCharType")
     @Column(name = "ID", nullable = false, length = 36)
-    private UUID id;
+    private String id;
     
     @Column(name = "NAME")
     private String name;
@@ -40,13 +35,21 @@ public class UserEntity extends AbstractEntity implements UserModel {
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "CREATED_AT", nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
     @Override
     public String getId() {
-        return id.toString();
+        return id;
     }
 
     public void setId(String id) {
-        this.id = UUID.fromString(id);
+        this.id = id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id.toString();
     }
 
     @Override
@@ -67,4 +70,35 @@ public class UserEntity extends AbstractEntity implements UserModel {
         this.email = email;
     }
     
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    @PrePersist
+    public void created() {
+
+        final Date now = new Date();
+        createdAt = now;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserEntity)) {
+            return false;
+        }
+        final UserEntity that = (UserEntity) o;
+        return Objects.equals(id, that.id)
+            && Objects.equals(name, that.name)
+            && Objects.equals(email, that.email)
+            && Objects.equals(createdAt, that.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }

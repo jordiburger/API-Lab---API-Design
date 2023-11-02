@@ -17,8 +17,8 @@ import static io.restassured.RestAssured.given;
 
 import java.util.UUID;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 
 @QuarkusTest
 class UserResourceTest extends AbstractTest {
@@ -35,14 +35,6 @@ class UserResourceTest extends AbstractTest {
             .when().get(BASE_PATH + "/" + UUID.randomUUID())
             .then()
             .statusCode(Status.NOT_FOUND.getStatusCode());
-    }
-
-    @Test
-    void testInvalidUserId() {
-        given()
-            .when().get(BASE_PATH + "/anyId")
-            .then()
-            .statusCode(Status.BAD_REQUEST.getStatusCode());
     }
 
     @Test

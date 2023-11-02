@@ -1,14 +1,15 @@
 package de.berlin.htw.control;
 
 import java.util.List;
+import java.util.UUID;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityExistsException;
-import javax.transaction.Transactional;
-import javax.transaction.UserTransaction;
-import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.NotFoundException;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityExistsException;
+import jakarta.transaction.Transactional;
+import jakarta.transaction.UserTransaction;
+import jakarta.ws.rs.InternalServerErrorException;
+import jakarta.ws.rs.NotFoundException;
 
 import org.jboss.logging.Logger;
 
@@ -39,6 +40,7 @@ public class UserController {
     public String createUser(final UserModel user) {
         logger.infov("Creating a new user (name={0}, email={1})", user.getName(), user.getEmail());
         final UserEntity entity = new UserEntity();
+        entity.setId(UUID.randomUUID());
         entity.setName(user.getName());
         entity.setEmail(user.getEmail());
         try {

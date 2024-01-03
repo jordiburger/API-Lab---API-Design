@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
+import de.berlin.htw.lib.model.ProjectModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,24 +15,26 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Email;
 
-import de.berlin.htw.lib.model.UserModel;
+import de.berlin.htw.lib.model.ProjectModel;
 
-
-@NamedQuery(name = "ProjectEntity.deleteById", query = "delete from UserEntity user where user.id = :id")
+/**
+ * @author Jordi Burger
+ */
+@NamedQuery(name = "UserEntity.deleteById", query = "delete from UserEntity user where user.id = :id")
 @Entity
-@Table(name = "USER")
-public class UserEntity implements UserModel {
+@Table(name = "PROJECT")
+public class ProjectEntity implements ProjectModel {
 
     @Id
     @Column(name = "ID", nullable = false, length = 36)
     private String id;
-    
+
     @Column(name = "NAME")
     private String name;
-    
+
     @Email
-    @Column(name = "EMAIL", nullable = false, unique = true)
-    private String email;
+    @Column(name = "DESCRIPTION", nullable = false, unique = true)
+    private String description;
 
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,23 +54,23 @@ public class UserEntity implements UserModel {
     }
 
     @Override
-    public String getName() {
+    public String getTitle() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setTitle(String name) {
         this.name = name;
     }
 
     @Override
-    public String getEmail() {
-        return email;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setDescription(String description) {
+        this.description = description;
     }
-    
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -84,14 +87,14 @@ public class UserEntity implements UserModel {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof UserEntity)) {
+        if (!(o instanceof ProjectEntity)) {
             return false;
         }
-        final UserEntity that = (UserEntity) o;
+        final ProjectEntity that = (ProjectEntity) o;
         return Objects.equals(id, that.id)
-            && Objects.equals(name, that.name)
-            && Objects.equals(email, that.email)
-            && Objects.equals(createdAt, that.createdAt);
+                && Objects.equals(name, that.name)
+                && Objects.equals(description, that.description)
+                && Objects.equals(createdAt, that.createdAt);
     }
 
     @Override

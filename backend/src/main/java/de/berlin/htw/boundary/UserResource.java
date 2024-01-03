@@ -17,9 +17,7 @@ import de.berlin.htw.lib.UserEndpoint;
 import de.berlin.htw.lib.dto.UserJson;
 import de.berlin.htw.lib.model.UserModel;
 
-/**
- * @author Alexander Stanik [stanik@htw-berlin.de]
- */
+
 @Path(UserEndpoint.CONTEXT + "/" + UserEndpoint.VERSION + "/" + UserEndpoint.SERVICE)
 public class UserResource implements UserEndpoint {
 
@@ -29,6 +27,8 @@ public class UserResource implements UserEndpoint {
     @Inject
     UserController controller;
 
+    // Überschreibt die vorderfinierte getUsers Methode aus User Endpoint und wendet die Methode getUsers an.
+    // Weitere Aufgaben der Boundary Layer?
     @Override
     public List<UserJson> getUsers() {
         final List<UserJson> users = new ArrayList<>();

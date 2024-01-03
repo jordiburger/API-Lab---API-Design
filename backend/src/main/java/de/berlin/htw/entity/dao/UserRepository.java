@@ -15,9 +15,7 @@ import jakarta.validation.Valid;
 
 import de.berlin.htw.entity.dto.UserEntity;
 
-/**
- * @author Alexander Stanik [stanik@htw-berlin.de]
- */
+
 @ApplicationScoped
 @Transactional(TxType.MANDATORY)
 public class UserRepository {

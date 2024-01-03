@@ -21,9 +21,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import de.berlin.htw.lib.dto.UserJson;
 
-/**
- * @author Alexander Stanik [stanik@htw-berlin.de]
- */
+
 @Path(UserEndpoint.CONTEXT + "/" + UserEndpoint.VERSION + "/" + UserEndpoint.SERVICE)
 public interface UserEndpoint {
 

@@ -18,9 +18,7 @@ import de.berlin.htw.entity.dao.UserRepository;
 import de.berlin.htw.entity.dto.UserEntity;
 import de.berlin.htw.lib.model.UserModel;
 
-/**
- * @author Alexander Stanik [stanik@htw-berlin.de]
- */
+
 @RequestScoped
 public class UserController {
     
